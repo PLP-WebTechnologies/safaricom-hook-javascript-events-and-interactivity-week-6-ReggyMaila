@@ -1,0 +1,214 @@
+
+Assignment: Creating Interactive Elements and Form Validation
+
+
+1.HTML File (index.html)
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Elements and Form Validation</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script> 
+</head>
+<body>
+
+    <!-- Toggle Background Color Button -->
+    <button id="toggle-btn">Toggle Background Color</button>
+
+    <!-- Slider for Real-Time Feedback -->
+    <label for="size-slider">Adjust Text Size: </label>
+    <input type="range" id="size-slider" min="10" max="40" value="16">
+    <p id="text">This text size will change dynamically!</p>
+
+    <!-- Modal Section -->
+    <button id="modal-btn">Open Modal</button>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span id="close-btn">&times;</span>
+            <p>This is a modal!</p>
+        </div>
+    </div>
+
+    <!-- Form with Validation -->
+    <form id="validation-form">
+        <label for="name">Name (min 3 characters):</label>
+        <input type="text" id="name" name="name" required>
+        <span id="name-error" class="error-message"></span>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <span id="email-error" class="error-message"></span>
+
+        <label for="password">Password (min 8 characters, 1 uppercase, 1 number):</label>
+        <input type="password" id="password" name="password" required>
+        <span id="password-error" class="error-message"></span>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <!-- Dropdown with Change Event -->
+    <label for="message-dropdown">Choose a message:</label>
+    <select id="message-dropdown">
+        <option value="greeting">Hello, World!</option>
+        <option value="farewell">Goodbye, World!</option>
+    </select>
+    <p id="dropdown-message"></p>
+
+</body>
+</html>
+
+
+2.CSS File (style.css)
+
+/* Basic styling */
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+/* Button styling */
+button {
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Slider styling */
+input[type="range"] {
+    width: 100%;
+    max-width: 300px;
+}
+
+/* Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+#close-btn {
+    cursor: pointer;
+    font-size: 25px;
+}
+
+/* Error message styling */
+.error-message {
+    color: red;
+    font-size: 12px;
+}
+
+/* Success styling */
+.success {
+    color: green;
+}
+
+
+3.JavaScript File (script.js)
+
+// Part 1: Interactive Button (Toggle Background Color)
+const toggleBtn = document.getElementById("toggle-btn");
+let isRed = true;
+
+toggleBtn.addEventListener("click", () => {
+    if (isRed) {
+        document.body.style.backgroundColor = "lightblue";
+    } else {
+        document.body.style.backgroundColor = "lightcoral";
+    }
+    isRed = !isRed;
+});
+
+// Part 2: Slider for Real-Time Feedback
+const sizeSlider = document.getElementById("size-slider");
+const textElement = document.getElementById("text");
+
+sizeSlider.addEventListener("input", () => {
+    textElement.style.fontSize = sizeSlider.value + "px";
+});
+
+// Part 3: Modal with Event Listeners
+const modalBtn = document.getElementById("modal-btn");
+const modal = document.getElementById("modal");
+const closeModalBtn = document.getElementById("close-btn");
+
+modalBtn.addEventListener("click", () => {
+    modal.style.display = "flex";
+});
+
+closeModalBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+});
+
+// Part 4: Form Validation
+const form = document.getElementById("validation-form");
+const nameInput = document.getElementById("name");
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const nameError = document.getElementById("name-error");
+const emailError = document.getElementById("email-error");
+const passwordError = document.getElementById("password-error");
+
+form.addEventListener("submit", (event) => {
+    let valid = true;
+
+    // Name validation
+    if (nameInput.value.length < 3) {
+        nameError.textContent = "Name must be at least 3 characters long.";
+        valid = false;
+    } else {
+        nameError.textContent = "";
+    }
+
+    // Email validation
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    if (!emailRegex.test(emailInput.value)) {
+        emailError.textContent = "Please enter a valid email address.";
+        valid = false;
+    } else {
+        emailError.textContent = "";
+    }
+
+    // Password validation
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+    if (!passwordRegex.test(passwordInput.value)) {
+        passwordError.textContent = "Password must be at least 8 characters, with one uppercase letter and one number.";
+        valid = false;
+    } else {
+        passwordError.textContent = "";
+    }
+
+    // Prevent form submission if there are errors
+    if (!valid) {
+        event.preventDefault();
+    }
+});
+
+// Part 5: Dropdown with onchange Event
+const dropdown = document.getElementById("message-dropdown");
+const dropdownMessage = document.getElementById("dropdown-message");
+
+dropdown.addEventListener("change", () => {
+    const selectedValue = dropdown.value;
+    if (selectedValue === "greeting") {
+        dropdownMessage.textContent = "Hello, World!";
+    } else if (selectedValue === "farewell") {
+        dropdownMessage.textContent = "Goodbye, World!";
+    }
+});
+
+
